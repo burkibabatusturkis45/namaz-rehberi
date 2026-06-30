@@ -4,9 +4,161 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Namaz Rehberi</title>
+<style>
+  :root{--night:#0d1b2a;--night2:#11263b;--gold:#d4a843;--gold-soft:#f1d98b;--cream:#f4ecd8;--line:rgba(212,168,67,0.25);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(circle at 50% 0%, var(--night2), var(--night) 70%);color:var(--cream);font-family:'Georgia','Times New Roman',serif;min-height:100vh;padding-bottom:40px;}
+  header{text-align:center;padding:34px 16px 22px;border-bottom:1px solid var(--line);}
+  header h1{margin:0;font-size:1.6rem;letter-spacing:1px;color:var(--gold-soft);font-weight:600;}
+  header p{margin:6px 0 0;font-size:0.85rem;opacity:0.7;font-family:Arial,sans-serif;}
+  nav{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:14px 10px;}
+  nav button{background:transparent;border:1px solid var(--line);color:var(--cream);padding:8px 14px;border-radius:20px;font-family:Arial,sans-serif;font-size:0.8rem;cursor:pointer;}
+  nav button.active{background:var(--gold);color:var(--night);border-color:var(--gold);font-weight:bold;}
+  section{display:none;max-width:480px;margin:0 auto;padding:16px 18px 30px;}
+  section.active{display:block;}
+  .card{background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;}
+  .card h2{margin:0 0 10px;font-size:1.05rem;color:var(--gold-soft);}
+  .vakit-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-family:Arial,sans-serif;}
+  .vakit-row:last-child{border-bottom:none;}
+  .vakit-row .name{opacity:0.85;}
+  .vakit-row .time{font-weight:bold;color:var(--gold-soft);}
+  button.action{background:var(--gold);color:var(--night);border:none;padding:10px 16px;border-radius:10px;font-weight:bold;font-family:Arial,sans-serif;cursor:pointer;width:100%;}
+  #qiblaWrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  #compass{width:200px;height:200px;border-radius:50%;border:2px solid var(--gold);position:relative;background:radial-gradient(circle, rgba(212,168,67,0.08), transparent 70%);}
+  #needle{position:absolute;left:50%;top:50%;width:4px;height:80px;background:var(--gold-soft);transform-origin:bottom center;transform:translate(-50%,-100%) rotate(0deg);border-radius:4px;}
+  #needle::after{content:"";position:absolute;top:-8px;left:50%;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:14px solid var(--gold-soft);transform:translateX(-50%);}
+  .checklist label{display:flex;align-items:center;justify-content:space-between;font-family:Arial,sans-serif;padding:8px 0;border-bottom:1px dashed var(--line);}
+  .checklist input{width:20px;height:20px;}
+  .quote{font-style:italic;line-height:1.6;margin-bottom:8px;}
+  .quote-src{font-size:0.78rem;opacity:0.6;font-family:Arial,sans-serif;text-align:right;}
+  .small{font-size:0.8rem;opacity:0.7;font-family:Arial,sans-serif;line-height:1.5;}
+  .donate-item{padding:10px 0;border-bottom:1px dashed var(--line);}
+  .donate-item b{color:var(--gold-soft);}
+  #status{text-align:center;font-family:Arial,sans-serif;font-size:0.8rem;opacity:0.7;margin-top:8px;}
+</style>
 </head>
 <body>
-<h1>Namaz Rehberi yükleniyor...</h1>
-<p>Bu sadece test sayfası. Şimdi gerçek içeriği ekleyeceğiz.</p>
+<header>
+  <h1>🕌 Namaz Rehberi</h1>
+  <p>Vakitler · Kıble · Takip · Hadis &amp; Dua</p>
+</header>
+<nav>
+  <button data-tab="vakitler" class="active">Vakitler</button>
+  <button data-tab="kible">Kıble</button>
+  <button data-tab="takip">Takip</button>
+  <button data-tab="hadis">Hadis/Dua</button>
+  <button data-tab="bagis">Bağış</button>
+</nav>
+<section id="vakitler" class="active">
+  <div class="card">
+    <h2>Bugünün Namaz Vakitleri</h2>
+    <div id="vakitList"><p class="small">Vakitleri görmek için konumuna izin ver.</p></div>
+    <br>
+    <button class="action" onclick="getVakitler()">Konumumu Kullan</button>
+    <div id="status"></div>
+  </div>
+</section>
+<section id="kible">
+  <div class="card" id="qiblaWrap">
+    <h2 style="width:100%">Kıble Yönü</h2>
+    <div id="compass"><div id="needle"></div></div>
+    <p class="small" id="qiblaInfo">Kıble açısını öğrenmek için konumuna izin ver.</p>
+    <button class="action" onclick="getQibla()">Kıbleyi Bul</button>
+  </div>
+</section>
+<section id="takip">
+  <div class="card">
+    <h2>Günlük Namaz Takibi</h2>
+    <div class="checklist" id="checklist"></div>
+    <p class="small" style="margin-top:10px">Not: Bu liste sadece bu sayfa açıkken hatırlanır.</p>
+  </div>
+</section>
+<section id="hadis">
+  <div class="card">
+    <h2>Günün Hadis veya Duası</h2>
+    <p class="quote" id="quoteText">Yükleniyor...</p>
+    <p class="quote-src" id="quoteSrc"></p>
+    <button class="action" onclick="newQuote()">Yenisini Göster</button>
+  </div>
+</section>
+<section id="bagis">
+  <div class="card">
+    <h2>Bağış Yapılabilecek Yerler</h2>
+    <p class="small" style="margin-bottom:10px">Burası şimdilik örnek bir liste.</p>
+    <div class="donate-item"><b>Cami / Mahalle Yardımlaşma Sandığı</b><br><span class="small">Yaşadığın yerdeki camiye sorarak öğrenebilirsin.</span></div>
+    <div class="donate-item"><b>Tanıdığın Güvenilir Hayır Kurumları</b><br><span class="small">Ailenle konuşarak karar verebilirsiniz.</span></div>
+    <div class="donate-item"><b>İhtiyaç Sahibi Komşu/Akraba</b><br><span class="small">En güzel sadaka, çevrendeki ihtiyacı bilmektir.</span></div>
+  </div>
+</section>
+<script>
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+async function getVakitler(){
+  const statusEl=document.getElementById('status');
+  const listEl=document.getElementById('vakitList');
+  statusEl.textContent="Konum alınıyor...";
+  if(!navigator.geolocation){statusEl.textContent="Konum desteklenmiyor.";return;}
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const {latitude, longitude} = pos.coords;
+    statusEl.textContent="Vakitler getiriliyor...";
+    try{
+      const today = new Date();
+      const dateStr = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
+      const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${latitude}&longitude=${longitude}&method=13`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const t = data.data.timings;
+      const vakitler = [["İmsak","t.Fajr".includes("t.")?t.Fajr:t.Fajr],["Güneş",t.Sunrise],["Öğle",t.Dhuhr],["İkindi",t.Asr],["Akşam",t.Maghrib],["Yatsı",t.Isha]];
+      listEl.innerHTML = vakitler.map(([name,time])=>`<div class="vakit-row"><span class="name">${name}</span><span class="time">${time}</span></div>`).join('');
+      statusEl.textContent="Vakitler güncellendi.";
+    }catch(e){statusEl.textContent="Vakitler alınamadı.";}
+  }, ()=>{statusEl.textContent="Konum izni verilmedi.";});
+}
+function getQibla(){
+  const infoEl=document.getElementById('qiblaInfo');
+  if(!navigator.geolocation){infoEl.textContent="Konum desteklenmiyor.";return;}
+  infoEl.textContent="Konum alınıyor...";
+  navigator.geolocation.getCurrentPosition((pos)=>{
+    const {latitude, longitude} = pos.coords;
+    const kaabaLat = 21.4225 * Math.PI/180;
+    const kaabaLng = 39.8262 * Math.PI/180;
+    const lat = latitude * Math.PI/180;
+    const lng = longitude * Math.PI/180;
+    const dLng = kaabaLng - lng;
+    const y = Math.sin(dLng) * Math.cos(kaabaLat);
+    const x = Math.cos(lat)*Math.sin(kaabaLat) - Math.sin(lat)*Math.cos(kaabaLat)*Math.cos(dLng);
+    let bearing = Math.atan2(y,x) * 180/Math.PI;
+    bearing = (bearing + 360) % 360;
+    document.getElementById('needle').style.transform = `translate(-50%,-100%) rotate(${bearing}deg)`;
+    infoEl.textContent = `Kıble açısı: ${bearing.toFixed(0)}°.`;
+  }, ()=>{infoEl.textContent="Konum izni verilmedi.";});
+}
+const vakitNames = ["İmsak/Sabah","Öğle","İkindi","Akşam","Yatsı"];
+const checklistEl = document.getElementById('checklist');
+vakitNames.forEach((name,i)=>{
+  const label = document.createElement('label');
+  label.innerHTML = `<span>${name}</span><input type="checkbox" id="chk${i}">`;
+  checklistEl.appendChild(label);
+});
+const quotes = [
+  {text:"İşlerin en hayırlısı, az da olsa devamlı yapılandır.", src:"Hadis-i Şerif (özetle)"},
+  {text:"Rabbim! Bana ve anne babama verdiğin nimete şükretmemi nasip eyle.", src:"Kur'an'dan ilham (Neml 19)"},
+  {text:"Allah'ım, dünyada ve ahirette bize iyilik ver, bizi ateşin azabından koru.", src:"Bilinen dua (Bakara 201)"},
+  {text:"Güler yüzle selam vermek bile bir sadakadır.", src:"Hadis (özetle)"},
+  {text:"Kolaylaştırınız, zorlaştırmayınız.", src:"Hadis (özetle)"}
+];
+function newQuote(){
+  const q = quotes[Math.floor(Math.random()*quotes.length)];
+  document.getElementById('quoteText').textContent = q.text;
+  document.getElementById('quoteSrc').textContent = "— " + q.src;
+}
+newQuote();
+</script>
 </body>
-</html>
+  </html>
