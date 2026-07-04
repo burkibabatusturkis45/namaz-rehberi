@@ -3,162 +3,547 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Namaz Rehberi</title>
+<title>İslami Rehber</title>
 <style>
-  :root{--night:#0d1b2a;--night2:#11263b;--gold:#d4a843;--gold-soft:#f1d98b;--cream:#f4ecd8;--line:rgba(212,168,67,0.25);}
-  *{box-sizing:border-box;}
-  body{margin:0;background:radial-gradient(circle at 50% 0%, var(--night2), var(--night) 70%);color:var(--cream);font-family:'Georgia','Times New Roman',serif;min-height:100vh;padding-bottom:40px;}
-  header{text-align:center;padding:34px 16px 22px;border-bottom:1px solid var(--line);}
-  header h1{margin:0;font-size:1.6rem;letter-spacing:1px;color:var(--gold-soft);font-weight:600;}
-  header p{margin:6px 0 0;font-size:0.85rem;opacity:0.7;font-family:Arial,sans-serif;}
-  nav{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:14px 10px;}
-  nav button{background:transparent;border:1px solid var(--line);color:var(--cream);padding:8px 14px;border-radius:20px;font-family:Arial,sans-serif;font-size:0.8rem;cursor:pointer;}
-  nav button.active{background:var(--gold);color:var(--night);border-color:var(--gold);font-weight:bold;}
-  section{display:none;max-width:480px;margin:0 auto;padding:16px 18px 30px;}
-  section.active{display:block;}
-  .card{background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;}
-  .card h2{margin:0 0 10px;font-size:1.05rem;color:var(--gold-soft);}
-  .vakit-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-family:Arial,sans-serif;}
-  .vakit-row:last-child{border-bottom:none;}
-  .vakit-row .name{opacity:0.85;}
-  .vakit-row .time{font-weight:bold;color:var(--gold-soft);}
-  button.action{background:var(--gold);color:var(--night);border:none;padding:10px 16px;border-radius:10px;font-weight:bold;font-family:Arial,sans-serif;cursor:pointer;width:100%;}
-  #qiblaWrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
-  #compass{width:200px;height:200px;border-radius:50%;border:2px solid var(--gold);position:relative;background:radial-gradient(circle, rgba(212,168,67,0.08), transparent 70%);}
-  #needle{position:absolute;left:50%;top:50%;width:4px;height:80px;background:var(--gold-soft);transform-origin:bottom center;transform:translate(-50%,-100%) rotate(0deg);border-radius:4px;}
-  #needle::after{content:"";position:absolute;top:-8px;left:50%;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:14px solid var(--gold-soft);transform:translateX(-50%);}
-  .checklist label{display:flex;align-items:center;justify-content:space-between;font-family:Arial,sans-serif;padding:8px 0;border-bottom:1px dashed var(--line);}
-  .checklist input{width:20px;height:20px;}
-  .quote{font-style:italic;line-height:1.6;margin-bottom:8px;}
-  .quote-src{font-size:0.78rem;opacity:0.6;font-family:Arial,sans-serif;text-align:right;}
-  .small{font-size:0.8rem;opacity:0.7;font-family:Arial,sans-serif;line-height:1.5;}
-  .donate-item{padding:10px 0;border-bottom:1px dashed var(--line);}
-  .donate-item b{color:var(--gold-soft);}
-  #status{text-align:center;font-family:Arial,sans-serif;font-size:0.8rem;opacity:0.7;margin-top:8px;}
+:root {
+  --green-dark: #0a2218;
+  --green-mid: #0f3d28;
+  --green-light: #1a5c3a;
+  --green-accent: #2d8a5e;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --cream: #f0ead8;
+  --white: #ffffff;
+  --card-bg: rgba(255,255,255,0.06);
+  --card-border: rgba(45,138,94,0.3);
+  --text-dim: rgba(240,234,216,0.6);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: linear-gradient(160deg, var(--green-dark) 0%, #061a12 60%, #030e0a 100%);
+  color: var(--cream);
+  font-family: 'Georgia', serif;
+  min-height: 100vh;
+}
+
+/* ===== TANITIM EKRANI ===== */
+#tanitim {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #061a10, #030d08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 30px 24px;
+  text-align: center;
+}
+.tanitim-logo { font-size: 4rem; margin-bottom: 16px; }
+.tanitim-baslik { font-size: 1.8rem; color: var(--gold-light); margin-bottom: 8px; }
+.tanitim-alt { font-size: 0.9rem; color: var(--text-dim); font-family: Arial, sans-serif; margin-bottom: 32px; line-height: 1.6; }
+.tanitim-ozellikler { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 36px; }
+.tanitim-ozellik { background: rgba(45,138,94,0.15); border: 1px solid rgba(45,138,94,0.3); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; text-align: left; }
+.tanitim-ozellik .icon { font-size: 1.4rem; }
+.tanitim-ozellik p { font-size: 0.85rem; font-family: Arial, sans-serif; line-height: 1.4; }
+.tanitim-ozellik p b { color: var(--gold-light); display: block; margin-bottom: 2px; }
+.baslat-btn { background: linear-gradient(135deg, var(--green-accent), #1a6b47); color: white; border: none; padding: 16px 48px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; font-family: Arial, sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(45,138,94,0.4); }
+.tanitim-alt2 { font-size: 0.72rem; color: var(--text-dim); font-family: Arial, sans-serif; margin-top: 12px; }
+
+/* ===== HEADER ===== */
+header {
+  background: rgba(10,34,24,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 14px 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.header-logo { display: flex; align-items: center; gap: 8px; }
+.header-logo span { font-size: 1.4rem; }
+.header-logo h1 { font-size: 1.1rem; color: var(--gold-light); }
+.header-logo p { font-size: 0.7rem; color: var(--text-dim); font-family: Arial, sans-serif; }
+
+/* ===== ÜST MENÜ ===== */
+.top-nav { display: flex; overflow-x: auto; gap: 4px; padding-bottom: 0; scrollbar-width: none; }
+.top-nav::-webkit-scrollbar { display: none; }
+.top-nav button {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  padding: 8px 14px;
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.top-nav button.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+/* ===== SAYFA İÇERİK ===== */
+.page { display: none; padding: 16px 14px 80px; max-width: 480px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* ===== KARTLAR ===== */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-size: 0.95rem;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== BUTONLAR ===== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--green-accent), #1a6b47);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-secondary {
+  background: rgba(45,138,94,0.15);
+  border: 1px solid var(--card-border);
+  color: var(--gold-light);
+  padding: 10px;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* ===== VAKİT ===== */
+.vakit-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(45,138,94,0.15);
+  font-family: Arial, sans-serif;
+}
+.vakit-item:last-child { border-bottom: none; }
+.vakit-item .vakit-adi { font-size: 0.9rem; }
+.vakit-item .vakit-saat { font-size: 1rem; font-weight: bold; color: var(--gold-light); }
+.vakit-item .aktif-badge {
+  background: var(--green-accent);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ===== TAKİP ===== */
+.takip-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(45,138,94,0.15);
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+}
+.takip-item:last-child { border-bottom: none; }
+.takip-check { width: 22px; height: 22px; accent-color: var(--green-accent); cursor: pointer; }
+
+/* ===== İLERLEME ÇUBUĞU ===== */
+.progress-wrap { margin: 8px 0; }
+.progress-label { display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 4px; }
+.progress-bar { background: rgba(255,255,255,0.08); border-radius: 8px; height: 8px; overflow: hidden; }
+.progress-fill { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--green-accent), var(--gold)); transition: width 0.4s ease; }
+
+/* ===== 90 GÜN ===== */
+.gun-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin: 10px 0; }
+.gun-kare {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: 0;
+  transition: background 0.2s;
+}
+.gun-kare.tamam { background: var(--green-accent); }
+.gun-kare.bugun { border-color: var(--gold); }
+
+/* ===== KİBLE ===== */
+.kible-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+#compass {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid var(--green-accent);
+  position: relative;
+  background: radial-gradient(circle, rgba(45,138,94,0.1), transparent 70%);
+  box-shadow: 0 0 20px rgba(45,138,94,0.2);
+}
+#compass::before {
+  content: "N";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-family: Arial, sans-serif;
+}
+#needle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 76px;
+  background: linear-gradient(to top, var(--green-accent), var(--gold-light));
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(0deg);
+  border-radius: 4px;
+}
+#needle::after {
+  content: "🕋";
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+}
+
+/* ===== MOTİVE KARTI ===== */
+.motive-karti {
+  background: linear-gradient(135deg, rgba(45,138,94,0.2), rgba(10,34,24,0.8));
+  border: 1px solid rgba(45,138,94,0.4);
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.motive-karti p { font-size: 1rem; line-height: 1.8; font-style: italic; }
+.motive-karti .kaynak { font-size: 0.75rem; color: var(--text-dim); font-family: Arial, sans-serif; margin-top: 10px; }
+
+/* ===== SÜNNET ===== */
+.sunnet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(45,138,94,0.15);
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.sunnet-item:last-child { border-bottom: none; }
+.sunnet-item input { width: 18px; height: 18px; accent-color: var(--green-accent); flex-shrink: 0; margin-top: 2px; }
+.sunnet-bitti { opacity: 0.4; text-decoration: line-through; }
+
+/* ===== ORUÇ GÜN ===== */
+.ramazan-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 10px 0; }
+.r-gun {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 6px 2px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.r-gun.tutuldu { background: linear-gradient(135deg, var(--green-accent), #1a6b47); border-color: transparent; color: white; font-weight: bold; }
+
+/* ===== SSS ===== */
+.sss-item { border-bottom: 1px solid rgba(45,138,94,0.15); }
+.sss-item:last-child { border-bottom: none; }
+.sss-soru {
+  padding: 12px 0;
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--cream);
+}
+.sss-soru::after { content: "▼"; font-size: 0.65rem; color: var(--text-dim); transition: transform 0.2s; }
+.sss-item.acik .sss-soru::after { transform: rotate(180deg); }
+.sss-cevap { display: none; padding: 0 0 12px; font-family: Arial, sans-serif; font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+.sss-item.acik .sss-cevap { display: block; }
+
+/* ===== YAPAY ZEKA ===== */
+.ai-mesajlar {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+.ai-mesajlar::-webkit-scrollbar { width: 3px; }
+.ai-mesajlar::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 3px; }
+.mesaj { padding: 10px 14px; border-radius: 14px; font-family: Arial, sans-serif; font-size: 0.85rem; line-height: 1.5; max-width: 85%; }
+.mesaj.kullanici { background: var(--green-accent); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.mesaj.asistan { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); align-self: flex-start; border-bottom-left-radius: 4px; }
+.mesaj.yukleniyor { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px dashed var(--card-border); }
+.ai-input-wrap { display: flex; gap: 8px; }
+.ai-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--card-border);
+  color: var(--cream);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+}
+.ai-input::placeholder { color: var(--text-dim); }
+.ai-gonder {
+  background: var(--green-accent);
+  border: none;
+  color: white;
+  width: 42px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ===== TEMA ===== */
+.renk-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+.renk-top {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.2s;
+}
+.renk-top.secili { border-color: white; transform: scale(1.15); }
+.slider-wrap { margin: 12px 0; }
+.slider-label { font-family: Arial, sans-serif; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 6px; display: flex; justify-content: space-between; }
+input[type=range] { width: 100%; accent-color: var(--green-accent); }
+
+/* ===== VİDEO ===== */
+.video-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(45,138,94,0.15);
+}
+.video-item:last-child { border-bottom: none; }
+.video-ikon { width: 40px; height: 40px; background: #ff0000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.video-item a { color: var(--cream); font-family: Arial, sans-serif; font-size: 0.85rem; text-decoration: none; display: block; }
+.video-item p { font-size: 0.72rem; color: var(--text-dim); font-family: Arial, sans-serif; margin-top: 2px; }
+
+/* ===== GENEL ===== */
+.small { font-size: 0.8rem; color: var(--text-dim); font-family: Arial, sans-serif; line-height: 1.5; }
+.orta { font-family: Arial, sans-serif; font-size: 0.88rem; }
+.bosluk { height: 10px; }
+.separator { height: 1px; background: var(--card-border); margin: 10px 0; }
+.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; font-family: Arial, sans-serif; font-size: 0.85rem; border-bottom: 1px solid rgba(45,138,94,0.1); }
+.stat-row:last-child { border-bottom: none; }
+.stat-row .deger { color: var(--gold-light); font-weight: bold; }
+.status-msg { font-family: Arial, sans-serif; font-size: 0.78rem; color: var(--text-dim); text-align: center; margin-top: 8px; }
 </style>
 </head>
 <body>
+
+<!-- ===== TANITIM ===== -->
+<div id="tanitim">
+  <div class="tanitim-logo">🕌</div>
+  <h1 class="tanitim-baslik">İslami Rehber</h1>
+  <p class="tanitim-alt">Namaz vakitleri, kıble, takip, sünnetler,<br>motivasyon ve daha fazlası — tek uygulamada.</p>
+  <div class="tanitim-ozellikler">
+    <div class="tanitim-ozellik">
+      <span class="icon">⏰</span>
+      <p><b>Namaz Vakitleri</b>Konumuna göre gerçek zamanlı vakitler</p>
+    </div>
+    <div class="tanitim-ozellik">
+      <span class="icon">📊</span>
+      <p><b>90 Günlük Takip</b>Namaz ve oruç takibini kolayca yönet</p>
+    </div>
+    <div class="tanitim-ozellik">
+      <span class="icon">🤖</span>
+      <p><b>Yapay Zeka Asistan</b>Dini ve genel sorularını sor</p>
+    </div>
+    <div class="tanitim-ozellik">
+      <span class="icon">☀️</span>
+      <p><b>Peygamber Sünnetleri</b>50+ sünnet listesi ile takip et</p>
+    </div>
+  </div>
+  <button class="baslat-btn" onclick="tanitimKapat()">Başla →</button>
+  <p class="tanitim-alt2">Reklamsız · Ücretsiz · Her zaman güncel</p>
+</div>
+
+<!-- ===== HEADER ===== -->
 <header>
-  <h1>🕌 Namaz Rehberi</h1>
-  <p>Vakitler · Kıble · Takip · Hadis &amp; Dua</p>
+  <div class="header-top">
+    <div class="header-logo">
+      <span>🕌</span>
+      <div>
+        <h1>İslami Rehber</h1>
+        <p>Reklamsız & Ücretsiz</p>
+      </div>
+    </div>
+    <button onclick="sayfaGec('asistan')" style="background:rgba(45,138,94,0.2);border:1px solid var(--card-border);color:var(--gold-light);padding:6px 12px;border-radius:20px;font-size:0.75rem;font-family:Arial,sans-serif;cursor:pointer;">🤖 Asistan</button>
+  </div>
+  <nav class="top-nav" id="topNav">
+    <button data-page="namaz" class="active">🕌 Namaz</button>
+    <button data-page="kible">🧭 Kıble</button>
+    <button data-page="takip">📊 Takip</button>
+    <button data-page="oruc">🌙 Oruç</button>
+    <button data-page="sunnet">☀️ Sünnet</button>
+    <button data-page="motive">💡 Motive</button>
+    <button data-page="sss">❓ S.S.S.</button>
+    <button data-page="bagis">💚 Bağış</button>
+    <button data-page="asistan">🤖 Asistan</button>
+    <button data-page="ayarlar">⚙️ Ayarlar</button>
+  </nav>
 </header>
-<nav>
-  <button data-tab="vakitler" class="active">Vakitler</button>
-  <button data-tab="kible">Kıble</button>
-  <button data-tab="takip">Takip</button>
-  <button data-tab="hadis">Hadis/Dua</button>
-  <button data-tab="bagis">Bağış</button>
-</nav>
-<section id="vakitler" class="active">
+
+<!-- ===== NAMAZ ===== -->
+<div class="page active" id="page-namaz">
   <div class="card">
-    <h2>Bugünün Namaz Vakitleri</h2>
-    <div id="vakitList"><p class="small">Vakitleri görmek için konumuna izin ver.</p></div>
-    <br>
-    <button class="action" onclick="getVakitler()">Konumumu Kullan</button>
-    <div id="status"></div>
+    <div class="card-title">⏰ Bugünün Namaz Vakitleri</div>
+    <div id="vakitListesi"><p class="small">Vakitleri görmek için aşağıdaki butona bas.</p></div>
+    <div class="bosluk"></div>
+    <button class="btn-primary" onclick="vakitleriGetir()">📍 Konumumu Kullan</button>
+    <p class="status-msg" id="vakitStatus"></p>
   </div>
-</section>
-<section id="kible">
-  <div class="card" id="qiblaWrap">
-    <h2 style="width:100%">Kıble Yönü</h2>
-    <div id="compass"><div id="needle"></div></div>
-    <p class="small" id="qiblaInfo">Kıble açısını öğrenmek için konumuna izin ver.</p>
-    <button class="action" onclick="getQibla()">Kıbleyi Bul</button>
-  </div>
-</section>
-<section id="takip">
   <div class="card">
-    <h2>Günlük Namaz Takibi</h2>
-    <div class="checklist" id="checklist"></div>
-    <p class="small" style="margin-top:10px">Not: Bu liste sadece bu sayfa açıkken hatırlanır.</p>
+    <div class="card-title">💬 Günün Hadisi</div>
+    <div class="motive-karti" style="margin:0">
+      <p id="hadisMetin">Yükleniyor...</p>
+      <p class="kaynak" id="hadisKaynak"></p>
+    </div>
+    <div class="bosluk"></div>
+    <button class="btn-secondary" onclick="yeniHadis()">Yenisini Göster</button>
   </div>
-</section>
-<section id="hadis">
+</div>
+
+<!-- ===== KİBLE ===== -->
+<div class="page" id="page-kible">
   <div class="card">
-    <h2>Günün Hadis veya Duası</h2>
-    <p class="quote" id="quoteText">Yükleniyor...</p>
-    <p class="quote-src" id="quoteSrc"></p>
-    <button class="action" onclick="newQuote()">Yenisini Göster</button>
+    <div class="card-title">🧭 Kıble Yönü</div>
+    <div class="kible-wrap">
+      <div id="compass"><div id="needle"></div></div>
+      <p class="small" id="kibleBilgi" style="text-align:center">Kıble yönünü bulmak için konumuna izin ver.</p>
+      <button class="btn-primary" onclick="kibleBul()">📍 Kıbleyi Bul</button>
+    </div>
   </div>
-</section>
-<section id="bagis">
   <div class="card">
-    <h2>Bağış Yapılabilecek Yerler</h2>
-    <p class="small" style="margin-bottom:10px">Burası şimdilik örnek bir liste.</p>
-    <div class="donate-item"><b>Cami / Mahalle Yardımlaşma Sandığı</b><br><span class="small">Yaşadığın yerdeki camiye sorarak öğrenebilirsin.</span></div>
-    <div class="donate-item"><b>Tanıdığın Güvenilir Hayır Kurumları</b><br><span class="small">Ailenle konuşarak karar verebilirsiniz.</span></div>
-    <div class="donate-item"><b>İhtiyaç Sahibi Komşu/Akraba</b><br><span class="small">En güzel sadaka, çevrendeki ihtiyacı bilmektir.</span></div>
+    <div class="card-title">📖 Kıble Hakkında</div>
+    <p class="small" style="line-height:1.8">Kıble, Mekke'deki Kâbe'nin yönüdür. Türkiye'nin çoğu bölgesinden bakıldığında güneydoğu yönüne denk gelir. Namaz kılarken yüzünü bu yöne çevirmen gerekir.</p>
   </div>
-</section>
-<script>
-document.querySelectorAll('nav button').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-  });
-});
-async function getVakitler(){
-  const statusEl=document.getElementById('status');
-  const listEl=document.getElementById('vakitList');
-  statusEl.textContent="Konum alınıyor...";
-  if(!navigator.geolocation){statusEl.textContent="Konum desteklenmiyor.";return;}
-  navigator.geolocation.getCurrentPosition(async (pos)=>{
-    const {latitude, longitude} = pos.coords;
-    statusEl.textContent="Vakitler getiriliyor...";
-    try{
-      const today = new Date();
-      const dateStr = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
-      const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${latitude}&longitude=${longitude}&method=13`;
-      const res = await fetch(url);
-      const data = await res.json();
-      const t = data.data.timings;
-      const vakitler = [["İmsak","t.Fajr".includes("t.")?t.Fajr:t.Fajr],["Güneş",t.Sunrise],["Öğle",t.Dhuhr],["İkindi",t.Asr],["Akşam",t.Maghrib],["Yatsı",t.Isha]];
-      listEl.innerHTML = vakitler.map(([name,time])=>`<div class="vakit-row"><span class="name">${name}</span><span class="time">${time}</span></div>`).join('');
-      statusEl.textContent="Vakitler güncellendi.";
-    }catch(e){statusEl.textContent="Vakitler alınamadı.";}
-  }, ()=>{statusEl.textContent="Konum izni verilmedi.";});
-}
-function getQibla(){
-  const infoEl=document.getElementById('qiblaInfo');
-  if(!navigator.geolocation){infoEl.textContent="Konum desteklenmiyor.";return;}
-  infoEl.textContent="Konum alınıyor...";
-  navigator.geolocation.getCurrentPosition((pos)=>{
-    const {latitude, longitude} = pos.coords;
-    const kaabaLat = 21.4225 * Math.PI/180;
-    const kaabaLng = 39.8262 * Math.PI/180;
-    const lat = latitude * Math.PI/180;
-    const lng = longitude * Math.PI/180;
-    const dLng = kaabaLng - lng;
-    const y = Math.sin(dLng) * Math.cos(kaabaLat);
-    const x = Math.cos(lat)*Math.sin(kaabaLat) - Math.sin(lat)*Math.cos(kaabaLat)*Math.cos(dLng);
-    let bearing = Math.atan2(y,x) * 180/Math.PI;
-    bearing = (bearing + 360) % 360;
-    document.getElementById('needle').style.transform = `translate(-50%,-100%) rotate(${bearing}deg)`;
-    infoEl.textContent = `Kıble açısı: ${bearing.toFixed(0)}°.`;
-  }, ()=>{infoEl.textContent="Konum izni verilmedi.";});
-}
-const vakitNames = ["İmsak/Sabah","Öğle","İkindi","Akşam","Yatsı"];
-const checklistEl = document.getElementById('checklist');
-vakitNames.forEach((name,i)=>{
-  const label = document.createElement('label');
-  label.innerHTML = `<span>${name}</span><input type="checkbox" id="chk${i}">`;
-  checklistEl.appendChild(label);
-});
-const quotes = [
-  {text:"İşlerin en hayırlısı, az da olsa devamlı yapılandır.", src:"Hadis-i Şerif (özetle)"},
-  {text:"Rabbim! Bana ve anne babama verdiğin nimete şükretmemi nasip eyle.", src:"Kur'an'dan ilham (Neml 19)"},
-  {text:"Allah'ım, dünyada ve ahirette bize iyilik ver, bizi ateşin azabından koru.", src:"Bilinen dua (Bakara 201)"},
-  {text:"Güler yüzle selam vermek bile bir sadakadır.", src:"Hadis (özetle)"},
-  {text:"Kolaylaştırınız, zorlaştırmayınız.", src:"Hadis (özetle)"}
-];
-function newQuote(){
-  const q = quotes[Math.floor(Math.random()*quotes.length)];
-  document.getElementById('quoteText').textContent = q.text;
-  document.getElementById('quoteSrc').textContent = "— " + q.src;
-}
-newQuote();
-</script>
-</body>
-  </html>
+</div>
+
+<!-- ===== TAKİP ===== -->
+<div class="page" id="page-takip">
+  <div class="card">
+    <div class="card-title">✅ Bugünkü Namazlar</div>
+    <div id="bugunTakip"></div>
+    <div class="bosluk"></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Bugünkü ilerleme</span><span id="bugunYuzde">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="bugunBar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📅 90 Günlük Namaz Takibi</div>
+    <p class="small" style="margin-bottom:8px">Her güne dokun, o günü tamamlandı olarak işaretle.</p>
+    <div class="gun-grid" id="gunGrid90"></div>
+    <div class="bosluk"></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="gunSayi">0/90 gün</span><span id="gunYuzde">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="gunBar" style="width:0%"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ORUÇ ===== -->
+<div class="page" id="page-oruc">
+  <div class="card">
+    <div class="card-title">🌙 Ramazan 30 Günlük Takip</div>
+    <p class="small" style="margin-bottom:10px">Tuttuğun günlere dokun.</p>
+    <div class="ramazan-grid" id="ramazanGrid"></div>
+    <div class="bosluk"></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="orucSayi">0/30 gün tutuldu</span><span id="orucYuzde">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="orucBar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💬 Oruç Motivasyonu</div>
+    <div class="motive-karti" style="margin:0">
+      <p id="orucMotive">Yükleniyor...</p>
+      <p class="kaynak" id="orucKaynak"></p>
+    </div>
+    <div class="bosluk"></div>
+    <button class="btn-secondary" onclick="yeniOrucMotive()">Yenisini Göster</button>
+  </div>
+</div>
+
+<!-- ===== SÜNNET ===== -->
+<div class="page" id="page-sunnet">
+  <div class="card">
+    <div class="card-title">☀️ Peygamber Sünnetleri</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="sunnetSayi">0 sünnet işaretlendi</span><span id="sunnetYuzde">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="sunnetBar" style="width:0%"></div></div>
+    </div>
+    <div class="separator"></div>
+    <div id="sunnetListesi"></div>
+  </div>
+</div>
+
+<!-- ===== MOTİVE ===== -->
+<div class="page" id="page-motive">
+  <div class="card">
+    <div class="card-title">💡 Günün Motivasyonu</div>
+    <div class="motive-karti" style="margin:0">
+      <p id="motiveMetin">Yükleniyor...</p>
+      <p class="kaynak" id="motiveKaynak"></p>
+    </div>
+    <div class="bosluk"></div>
+    <button class="btn-primary" onclick="yeniMotive()">Yeni Motivasyon</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🤲 Günlük Dua</div>
+    <div class="motive-karti" style="margin:0">
+      <p id="duaMetin">Yükleniyor...</p>
+      <p class="kaynak" id="duaKaynak"></p>
+    </div>
+    <div class="bosluk"></div>
+    <button class="btn-secondary" onclick="yeniDua()">Yeni Dua</button>
+  </div>
+  <div class="card">
+    <div class="card-title">📖 Kur'an'a Teşvik</div>
+    <div class="motive-karti" style="margin:0;background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(10,34,24,0.8));border-color:rgba(201,168,76,0.3)">
+      <p style="font-size:0.9rem;line-height:1.8">"Kur'an'ı en güzel şekilde okuyanınız ve onu en iyi bilenleriniz benim yanımda en değerli olanınızdır."</p>
+      <p class="kaynak">— Hadis-i Şerif</p>
+    </div>
+    <div class="bosluk"></div>
+    <p class="small" style="text-align:center">Her gün en az bir sayfa Kur'an okumayı alışkanlık haline getir. 📖</p>
+  </div>
+</div>
+
+<!-- ===== SSS ===== -->
+<div class="page"
