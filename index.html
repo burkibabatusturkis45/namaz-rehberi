@@ -547,3 +547,222 @@ input[type=range] { width: 100%; accent-color: var(--green-accent); }
 
 <!-- ===== SSS ===== -->
 <div class="page
+<div class="card">
+    <div class="card-title">❓ Sık Sorulan Sorular</div>
+    <div id="sssListesi"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎬 Önerilen Videolar</div>
+    <p class="small" style="margin-bottom:10px">Namaz ve ibadet hakkında faydalı videolar:</p>
+    <div class="video-item">
+      <div class="video-ikon">▶</div>
+      <div>
+        <a href="https://www.youtube.com" target="_blank">Namaz Nasıl Kılınır? (Erkek)</a>
+        <p>Adım adım anlatımlı namaz rehberi</p>
+      </div>
+    </div>
+    <div class="video-item">
+      <div class="video-ikon">▶</div>
+      <div>
+        <a href="https://www.youtube.com" target="_blank">Abdest Nasıl Alınır?</a>
+        <p>Detaylı abdest anlatımı</p>
+      </div>
+    </div>
+    <div class="video-item">
+      <div class="video-ikon">▶</div>
+      <div>
+        <a href="https://www.youtube.com" target="_blank">Namaz Sureleri Ezberleme</a>
+        <p>Fatiha ve kısa sureler</p>
+      </div>
+    </div>
+    <p class="small" style="margin-top:10px;opacity:0.4">Daha fazla video yakında eklenecek.</p>
+  </div>
+</div>
+
+<!-- ===== YAPAY ZEKA ===== -->
+<div class="page" id="page-asistan">
+  <div class="card">
+    <div class="card-title">🤖 İslami Rehber Asistanı</div>
+    <p class="small" style="margin-bottom:12px">Dini veya genel konularda soru sorabilirsin.</p>
+    <div class="ai-mesajlar" id="aiMesajlar">
+      <div class="mesaj asistan">Merhaba! Ben İslami Rehber Asistanıyım. 🕌</div>
+    </div>
+    <div class="ai-input-wrap">
+      <input class="ai-input" id="aiInput" placeholder="Soru sor..." onkeydown="if(event.key==='Enter')aiGonder()">
+      <button class="ai-gonder" onclick="aiGonder()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AYARLAR ===== -->
+<div class="page" id="page-ayarlar">
+  <div class="card">
+    <div class="card-title">🎨 Tema Rengi</div>
+    <p class="small" style="margin-bottom:10px">Ana rengi seç:</p>
+    <div class="renk-grid" id="renkGrid"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌓 Parlaklık</div>
+    <div class="slider-wrap">
+      <div class="slider-label"><span>Ekran parlaklığı</span><span id="parlaklikDeger">%70</span></div>
+      <input type="range" min="30" max="100" value="70" oninput="parlaklikAyarla(this.value)">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">ℹ️ Uygulama Hakkında</div>
+    <div class="stat-row"><span>Versiyon</span><span class="deger">3.0 Beta</span></div>
+    <div class="stat-row"><span>Geliştirici</span><span class="deger">burkibabatusturkis45</span></div>
+    <div class="stat-row"><span>Reklam</span><span class="deger" style="color:#4caf50">Yok ✓</span></div>
+    <div class="stat-row"><span>Ücret</span><span class="deger" style="color:#4caf50">Ücretsiz ✓</span></div>
+  </div>
+</div>
+
+<script>
+function tanitimKapat() {
+  document.getElementById('tanitim').style.display = 'none';
+}
+document.querySelectorAll('#topNav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#topNav button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('page-' + btn.dataset.page).classList.add('active');
+  });
+});
+function sayfaGec(sayfa) {
+  document.querySelectorAll('#topNav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === sayfa);
+  });
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + sayfa).classList.add('active');
+}
+async function vakitleriGetir() {
+  const status = document.getElementById('vakitStatus');
+  const liste = document.getElementById('vakitListesi');
+  status.textContent = "Konum alınıyor...";
+  if (!navigator.geolocation) { status.textContent = "Konum desteklenmiyor."; return; }
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    status.textContent = "Vakitler yükleniyor...";
+    try {
+      const { latitude, longitude } = pos.coords;
+      const d = new Date();
+      const url = `https://api.aladhan.com/v1/timings/${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}?latitude=${latitude}&longitude=${longitude}&method=13`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const t = data.data.timings;
+      const vakitler = [["🌙 İmsak", t.Fajr], ["☀️ Güneş", t.Sunrise], ["🕐 Öğle", t.Dhuhr], ["🕓 İkindi", t.Asr], ["🌆 Akşam", t.Maghrib], ["🌃 Yatsı", t.Isha]];
+      liste.innerHTML = vakitler.map(([n, s]) => `<div class="vakit-item"><span class="vakit-adi">${n}</span><span class="vakit-saat">${s}</span></div>`).join('');
+      status.textContent = "✓ Vakitler güncellendi.";
+    } catch (e) { status.textContent = "Vakitler alınamadı."; }
+  }, () => { status.textContent = "Konum izni verilmedi."; });
+}
+function kibleBul() {
+  const bilgi = document.getElementById('kibleBilgi');
+  if (!navigator.geolocation) { bilgi.textContent = "Konum desteklenmiyor."; return; }
+  bilgi.textContent = "Konum alınıyor...";
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const { latitude, longitude } = pos.coords;
+    const kLat = 21.4225 * Math.PI / 180, kLng = 39.8262 * Math.PI / 180;
+    const lat = latitude * Math.PI / 180, lng = longitude * Math.PI / 180;
+    const dL = kLng - lng;
+    const y = Math.sin(dL) * Math.cos(kLat);
+    const x = Math.cos(lat) * Math.sin(kLat) - Math.sin(lat) * Math.cos(kLat) * Math.cos(dL);
+    let b = Math.atan2(y, x) * 180 / Math.PI;
+    b = (b + 360) % 360;
+    document.getElementById('needle').style.transform = `translate(-50%, -100%) rotate(${b}deg)`;
+    bilgi.textContent = `Kıble açısı: ${b.toFixed(0)}°`;
+  }, () => { bilgi.textContent = "Konum izni verilmedi."; });
+}
+const namazlar = ["🌙 Sabah", "🕐 Öğle", "🕓 İkindi", "🌆 Akşam", "🌃 Yatsı"];
+function takipOlustur() {
+  document.getElementById('bugunTakip').innerHTML = namazlar.map((v, i) => `
+    <div class="takip-item"><span>${v}</span><input type="checkbox" class="takip-check" id="n${i}" onchange="takipGuncelle()"></div>`).join('');
+}
+function takipGuncelle() {
+  const toplam = namazlar.filter((_, i) => document.getElementById(`n${i}`)?.checked).length;
+  const yuzde = Math.round(toplam / 5 * 100);
+  document.getElementById('bugunBar').style.width = yuzde + '%';
+  document.getElementById('bugunYuzde').textContent = yuzde + '%';
+}
+takipOlustur();
+function gunGrid90Olustur() {
+  document.getElementById('gunGrid90').innerHTML = Array.from({length: 90}, (_, i) => `<div class="gun-kare ${i===89?'bugun':''}" id="g${i}" onclick="gunToggle(${i})"></div>`).join('');
+}
+function gunToggle(i) {
+  document.getElementById(`g${i}`).classList.toggle('tamam');
+  const tamam = document.querySelectorAll('.gun-kare.tamam').length;
+  const yuzde = Math.round(tamam / 90 * 100);
+  document.getElementById('gunSayi').textContent = `${tamam}/90 gün`;
+  document.getElementById('gunYuzde').textContent = yuzde + '%';
+  document.getElementById('gunBar').style.width = yuzde + '%';
+}
+gunGrid90Olustur();
+function ramazanOlustur() {
+  document.getElementById('ramazanGrid').innerHTML = Array.from({length: 30}, (_, i) => `<div class="r-gun" id="r${i+1}" onclick="orucToggle(${i+1})">${i+1}</div>`).join('');
+}
+function orucToggle(n) {
+  document.getElementById(`r${n}`).classList.toggle('tutuldu');
+  const sayi = document.querySelectorAll('.r-gun.tutuldu').length;
+  const yuzde = Math.round(sayi / 30 * 100);
+  document.getElementById('orucSayi').textContent = `${sayi}/30 gün tutuldu`;
+  document.getElementById('orucYuzde').textContent = yuzde + '%';
+  document.getElementById('orucBar').style.width = yuzde + '%';
+}
+ramazanOlustur();
+const sunnetler = ["Sağ elle yemek yemek ve içmek","Yemek öncesi Besmele çekmek","Yemek sonra Elhamdülillah demek","Yatmadan önce misvak kullanmak","Sabah kalktığında üç kez ellerini yıkamak","Tuvalete girerken sol ayakla girmek","Tuvaletten çıkarken sağ ayakla çıkmak","Eve girerken selam vermek","Eve girerken sağ ayakla girmek","Evden çıkarken dua okumak","Uyumadan önce Ayetel Kürsi okumak","Uyumadan önce üç İhlas, Felak, Nas okumak","Sağ tarafına yatmak","Sabah namazından sonra zikir çekmek","Her gün 33 Sübhanallah, 33 Elhamdülillah, 34 Allahüekber demek","Cuma günü salavat getirmek","Cuma günü Kehf Suresi okumak","Yolda eziyet veren şeyi kaldırmak","Büyüklere saygı göstermek","Küçüklere şefkat göstermek","Komşuya iyi davranmak","Hasta ziyareti yapmak","Aksırınca elhamdülillah demek","Aksırana yerhameküllah demek","Ayakkabıyı sağ ayaktan giymek","Ayakkabıyı sol ayaktan çıkarmak","Gülümsemek ve tatlı dilli olmak","Sağ el ile vermek ve almak","Sofrada en yakındakinden yemek","İçerken oturmak","Üç nefeste içmek","Her işe Besmele ile başlamak","Dua ederken elleri kaldırmak","Dua bitince yüzü ellere sürmek","Camiye girerken sağ ayakla girmek","Camiden çıkarken sol ayakla çıkmak","Sabah namazını camide kılmaya çalışmak","Selamı her önce almak","Aile efradına güzel davranmak","Çocuklara şefkat ve sevgi göstermek","Kibar ve nazik olmak","Borcu ödemeyi geciktirmemek","Hayvanlara iyi davranmak","Ağaç dikmek ve yeşili korumak","İsraftan kaçınmak","Temizliğe özen göstermek","Özür dileyenden özür kabul etmek","Kızdığında abdest almak"];
+function sunnetListOlustur() {
+  document.getElementById('sunnetListesi').innerHTML = sunnetler.map((s, i) => `<div class="sunnet-item"><input type="checkbox" id="sun${i}" onchange="sunnetGuncelle()"><label for="sun${i}" id="sunL${i}">${s}</label></div>`).join('');
+}
+function sunnetGuncelle() {
+  const sayi = sunnetler.filter((_, i) => document.getElementById(`sun${i}`)?.checked).length;
+  const yuzde = Math.round(sayi / sunnetler.length * 100);
+  document.getElementById('sunnetSayi').textContent = `${sayi} sünnet işaretlendi`;
+  document.getElementById('sunnetYuzde').textContent = yuzde + '%';
+  document.getElementById('sunnetBar').style.width = yuzde + '%';
+  sunnetler.forEach((_, i) => { const l=document.getElementById(`sunL${i}`),c=document.getElementById(`sun${i}`); if(l&&c)l.className=c.checked?'sunnet-bitti':''; });
+}
+sunnetListOlustur();
+const hadisler = [{h:"İşlerin en hayırlısı az da olsa devamlı yapılandır.",k:"Buhari & Müslim"},{h:"Güler yüzle selam vermek bile bir sadakadır.",k:"Hadis-i Şerif"},{h:"Temizlik imanın yarısıdır.",k:"Müslim"},{h:"Dili ve eliyle insanlara zarar vermeyen gerçek Müslümandır.",k:"Buhari"},{h:"Büyüklere saygı, küçüklere şefkat gösterin.",k:"Hadis-i Şerif"},{h:"Komşusu açken tok yatan bizden değildir.",k:"Hadis-i Şerif"},{h:"Kolaylaştırınız, zorlaştırmayınız.",k:"Buhari"},{h:"En hayırlınız, ahlakça en güzel olanınızdır.",k:"Buhari & Müslim"}];
+function yeniHadis() { const r=hadisler[Math.floor(Math.random()*hadisler.length)]; document.getElementById('hadisMetin').textContent=r.h; document.getElementById('hadisKaynak').textContent="— "+r.k; }
+yeniHadis();
+const motiveler = [{m:"Allah sabredenlerin yanındadır.",k:"Bakara Suresi, 153"},{m:"Sonsuz cennetin yanında 80 yıllık dünya gerçekten fanidir. Namazı sakın bırakma!",k:"İslami öğreti"},{m:"Kim Allah'a tevekkül ederse, Allah ona yeter.",k:"Talak Suresi, 3"},{m:"Dünya, ahiretin tarlasıdır.",k:"İslami öğreti"},{m:"Her zorlukla birlikte bir kolaylık vardır.",k:"İnşirah Suresi, 5-6"},{m:"Namaz, müminin miracıdır.",k:"Hadis-i Şerif"}];
+function yeniMotive() { const r=motiveler[Math.floor(Math.random()*motiveler.length)]; document.getElementById('motiveMetin').textContent=r.m; document.getElementById('motiveKaynak').textContent="— "+r.k; }
+yeniMotive();
+const dualar = [{d:"Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver.",k:"Bakara Suresi, 201"},{d:"Allah'ım! Kalbimi dininde sabit kıl.",k:"Tirmizi"},{d:"Allah'ım! Senden faydalı ilim, temiz rızık istiyorum.",k:"İbn Mace"},{d:"Allah'ım! Beni affet, bana merhamet et.",k:"Müslim"}];
+function yeniDua() { const r=dualar[Math.floor(Math.random()*dualar.length)]; document.getElementById('duaMetin').textContent=r.d; document.getElementById('duaKaynak').textContent="— "+r.k; }
+yeniDua();
+const orucMotiveler = [{m:"Oruç, sabrın yarısıdır.",k:"Hadis-i Şerif"},{m:"Ramazan gelince cennetin kapıları açılır.",k:"Buhari & Müslim"},{m:"Oruçlu kişi iftarını açarken ettiği dua reddedilmez.",k:"İbn Mace"}];
+function yeniOrucMotive() { const r=orucMotiveler[Math.floor(Math.random()*orucMotiveler.length)]; document.getElementById('orucMotive').textContent=r.m; document.getElementById('orucKaynak').textContent="— "+r.k; }
+yeniOrucMotive();
+const sssList = [{s:"Namaz kaç vakit farz?",c:"Günde 5 vakit namaz farz."},{s:"Abdestsiz namaz kılınır mı?",c:"Hayır, abdest şarttır."},{s:"Kıble neresi?",c:"Mekke'deki Kâbe'nin yönüdür."},{s:"Bu uygulama ücretli mi?",c:"Hayır, tamamen ücretsiz ve reklamsızdır."}];
+function sssOlustur() { document.getElementById('sssListesi').innerHTML=sssList.map((item,i)=>`<div class="sss-item" id="sss${i}"><div class="sss-soru" onclick="sssToggle(${i})">${item.s}</div><div class="sss-cevap">${item.c}</div></div>`).join(''); }
+function sssToggle(i) { document.getElementById(`sss${i}`).classList.toggle('acik'); }
+sssOlustur();
+async function aiGonder() {
+  const input=document.getElementById('aiInput');
+  const mesaj=input.value.trim();
+  if(!mesaj)return;
+  input.value='';
+  const container=document.getElementById('aiMesajlar');
+  container.innerHTML+=`<div class="mesaj kullanici">${mesaj}</div>`;
+  container.innerHTML+=`<div class="mesaj yukleniyor" id="yukleniyor">✦ Yazıyor...</div>`;
+  container.scrollTop=container.scrollHeight;
+  try {
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:"Sen İslami Rehber uygulamasının yardımcı asistanısın. Türkçe konuşuyorsun. Dini sorularda Kuran ve hadislere dayalı, saygılı ve nazik cevaplar ver. Genel sorularda da yardımcı ol.",messages:[{role:"user",content:mesaj}]})});
+    const data=await res.json();
+    document.getElementById('yukleniyor').remove();
+    container.innerHTML+=`<div class="mesaj asistan">${data.content[0].text}</div>`;
+  } catch(e) {
+    document.getElementById('yukleniyor').remove();
+    container.innerHTML+=`<div class="mesaj asistan">Bağlantı kurulamadı, tekrar dene.</div>`;
+  }
+  container.scrollTop=container.scrollHeight;
+}
+const temalar=[{renk:"#0a2218",isim:"Koyu Yeşil"},{renk:"#0a1830",isim:"Gece Mavisi"},{renk:"#1a0a28",isim:"Mor"},{renk:"#280a0a",isim:"Koyu Kırmızı"},{renk:"#0a2828",isim:"Turkuaz"},{renk:"#1a1a08",isim:"Zeytin"},{renk:"#080a20",isim:"Lacivert"},{renk:"#200808",isim:"Bordo"}];
+function renkGridOlustur() { document.getElementById('renkGrid').innerHTML=temalar.map((t,i)=>`<div><div class="renk-top ${i===0?'secili':''}" style="background:${t.renk}" onclick="temaUygula('${t.renk}',this)" title="${t.isim}"></div></div>`).join(''); }
+function temaUygula(renk,el) { document.querySelectorAll('.renk-top').forEach(r=>r.classList.remove('secili')); el.classList.add('secili'); document.body.style.background=`linear-gradient(160deg, ${renk} 0%, ${renk}aa 60%, ${renk}88 100%)`; }
+function parlaklikAyarla(v) { document.getElementById('parlaklikDeger').textContent='%'+v; document.body.style.opacity=(v/100).toString(); }
+renkGridOlustur();
+</script>
+</body>
+  </html>
