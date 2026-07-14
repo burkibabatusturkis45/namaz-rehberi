@@ -3,653 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NamazVakti Premium</title>
+<title>Rota90</title>
+
 <style>
-:root{--bg:#0a0a0a;--bg2:#111111;--gold:#d4a843;--gold-soft:#f1d98b;--orange:#e8823a;--cream:#f4ecd8;--card:rgba(255,255,255,0.05);--border:rgba(212,168,67,0.2);--dim:rgba(244,236,216,0.5);}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:radial-gradient(circle at 50% 0%,#1a1200,#0a0a0a 70%) no-repeat fixed;background-size:cover;color:var(--cream);font-family:'Georgia',serif;min-height:100vh;}
-#tanitim{position:fixed;inset:0;background:linear-gradient(160deg,#0d0d00,#050505);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:30px 24px;text-align:center;}
-.t-logo{font-size:4rem;margin-bottom:16px;}
-.t-baslik{font-size:1.8rem;color:var(--gold-soft);margin-bottom:8px;}
-.t-alt{font-size:0.88rem;color:var(--dim);font-family:Arial,sans-serif;margin-bottom:28px;line-height:1.6;}
-.t-ozellikler{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-bottom:32px;}
-.t-ozellik{background:rgba(212,168,67,0.08);border:1px solid rgba(212,168,67,0.2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;text-align:left;}
-.t-ozellik .ikon{font-size:1.3rem;}
-.t-ozellik p{font-size:0.82rem;font-family:Arial,sans-serif;line-height:1.4;}
-.t-ozellik b{color:var(--gold-soft);display:block;margin-bottom:2px;}
-.baslat-btn{background:linear-gradient(135deg,var(--gold),var(--orange));color:#0a0a0a;border:none;padding:16px 48px;border-radius:50px;font-size:1.1rem;font-weight:bold;font-family:Arial,sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(212,168,67,0.4);}
-.t-alt2{font-size:0.7rem;color:var(--dim);font-family:Arial,sans-serif;margin-top:12px;}
 
-header{background:rgba(10,10,0,0.95);border-bottom:1px solid var(--border);padding:14px 166px 0 16px;position:sticky;top:0;z-index:100;}
-@media(max-width:768px){header{padding:14px 16px 0 16px;}}
-.header-top, .top-nav{max-width:480px;margin:0 auto;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
 
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.header-logo{display:flex;align-items:center;gap:8px;}
-.header-logo span{font-size:1.4rem;}
-.header-logo h1{font-size:1rem;color:var(--gold-soft);}
-.header-logo p{font-size:0.65rem;color:var(--dim);font-family:Arial,sans-serif;}
-.ai-btn{background:rgba(212,168,67,0.15);border:1px solid var(--border);color:var(--gold-soft);padding:6px 12px;border-radius:20px;font-size:0.72rem;font-family:Arial,sans-serif;cursor:pointer;}
-.top-nav{display:flex;overflow-x:auto;gap:2px;scrollbar-width:none;}
-.top-nav::-webkit-scrollbar{display:none;}
-.top-nav button{background:none;border:none;color:var(--dim);padding:8px 12px;font-family:Arial,sans-serif;font-size:0.75rem;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;}
-.top-nav button.active{color:var(--gold-soft);border-bottom-color:var(--gold);}
-.page{display:none;padding:16px 14px 60px;max-width:480px;margin:0 auto;}
-.page.active{display:block;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;}
-.card-title{font-size:0.92rem;color:var(--gold-soft);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.btn{background:linear-gradient(135deg,var(--gold),var(--orange));color:#0a0a0a;border:none;padding:12px;border-radius:12px;font-weight:bold;font-family:Arial,sans-serif;font-size:0.88rem;cursor:pointer;width:100%;}
-.btn2{background:rgba(212,168,67,0.1);border:1px solid var(--border);color:var(--gold-soft);padding:10px;border-radius:12px;font-family:Arial,sans-serif;font-size:0.82rem;cursor:pointer;width:100%;}
-.vakit-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(212,168,67,0.1);font-family:Arial,sans-serif;}
-.vakit-item:last-child{border-bottom:none;}
-.vakit-saat{font-weight:bold;color:var(--gold-soft);}
-.takip-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(212,168,67,0.1);font-family:Arial,sans-serif;font-size:0.88rem;}
-.takip-item:last-child{border-bottom:none;}
-.takip-item input{width:22px;height:22px;accent-color:var(--gold);cursor:pointer;}
-.progress-wrap{margin:8px 0;}
-.progress-label{display:flex;justify-content:space-between;font-family:Arial,sans-serif;font-size:0.78rem;color:var(--dim);margin-bottom:4px;}
-.progress-bar{background:rgba(255,255,255,0.06);border-radius:8px;height:8px;overflow:hidden;}
-.progress-fill{height:8px;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--orange));transition:width 0.4s ease;}
-.gun-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin:10px 0;}
-.gun-kare{aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,0.05);cursor:pointer;border:1px solid transparent;transition:background 0.2s;}
-.gun-kare.tamam{background:var(--gold);}
-.gun-kare.bugun{border-color:var(--orange);}
-.kible-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
-#compass{width:200px;height:200px;border-radius:50%;border:2px solid var(--gold);position:relative;background:radial-gradient(circle,rgba(212,168,67,0.08),transparent 70%);}
-#compass::before{content:"N";position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:0.8rem;color:var(--dim);font-family:Arial,sans-serif;}
-#needle{position:absolute;left:50%;top:50%;width:4px;height:76px;background:linear-gradient(to top,var(--gold),var(--orange));transform-origin:bottom center;transform:translate(-50%,-100%) rotate(0deg);border-radius:4px;transition:transform 0.1s ease-out;}
-#needle::after{content:"🕋";position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:1rem;}
-.motive-kart{background:linear-gradient(135deg,rgba(212,168,67,0.12),rgba(10,10,0,0.8));border:1px solid rgba(212,168,67,0.3);border-radius:16px;padding:22px;text-align:center;margin-bottom:12px;}
-.motive-kart p{font-size:0.95rem;line-height:1.8;font-style:italic;}
-.motive-kart .kaynak{font-size:0.72rem;color:var(--dim);font-family:Arial,sans-serif;margin-top:10px;}
-.sunnet-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(212,168,67,0.1);font-family:Arial,sans-serif;font-size:0.83rem;line-height:1.5;}
-.sunnet-item:last-child{border-bottom:none;}
-.sunnet-item input{width:18px;height:18px;accent-color:var(--gold);flex-shrink:0;margin-top:2px;cursor:pointer;}
-.sunnet-bitti{opacity:0.4;text-decoration:line-through;}
-.ramazan-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0;}
-.r-gun{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:6px 2px;text-align:center;font-size:0.72rem;font-family:Arial,sans-serif;cursor:pointer;transition:all 0.2s;}
-.r-gun.tutuldu{background:linear-gradient(135deg,var(--gold),var(--orange));border-color:transparent;color:#0a0a0a;font-weight:bold;}
-.sss-item{border-bottom:1px solid rgba(212,168,67,0.1);}
-.sss-item:last-child{border-bottom:none;}
-.sss-soru{padding:12px 0;font-family:Arial,sans-serif;font-size:0.85rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.sss-soru::after{content:"▼";font-size:0.6rem;color:var(--dim);transition:transform 0.2s;}
-.sss-item.acik .sss-soru::after{transform:rotate(180deg);}
-.sss-cevap{display:none;padding:0 0 12px;font-family:Arial,sans-serif;font-size:0.8rem;color:var(--dim);line-height:1.6;}
-.sss-item.acik .sss-cevap{display:block;}
-.video-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(212,168,67,0.1);}
-.video-item:last-child{border-bottom:none;}
-.video-ikon{width:38px;height:38px;background:#ff0000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.video-item a{color:var(--cream);font-family:Arial,sans-serif;font-size:0.83rem;text-decoration:none;display:block;}
-.video-item a:hover{text-decoration:underline;}
-.video-item p{font-size:0.7rem;color:var(--dim);font-family:Arial,sans-serif;margin-top:2px;}
-.ai-mesajlar{max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;padding-right:4px;}
-.mesaj{padding:10px 14px;border-radius:14px;font-family:Arial,sans-serif;font-size:0.83rem;line-height:1.5;max-width:85%;word-break:break-word;}
-.mesaj.kullanici{background:linear-gradient(135deg,var(--gold),var(--orange));color:#0a0a0a;align-self:flex-end;border-bottom-right-radius:4px;}
-.mesaj.asistan{background:rgba(255,255,255,0.05);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;}
-.mesaj.yukleniyor{background:rgba(255,255,255,0.03);color:var(--dim);border:1px dashed var(--border);align-self:flex-start;}
-.ai-input-wrap{display:flex;gap:8px;}
-.ai-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--cream);padding:10px 14px;border-radius:12px;font-family:Arial,sans-serif;font-size:0.83rem;outline:none;}
-.ai-input::placeholder{color:var(--dim);}
-.ai-gonder{background:linear-gradient(135deg,var(--gold),var(--orange));border:none;color:#0a0a0a;width:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;flex-shrink:0;font-weight:bold;}
-.renk-grid{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;}
-.renk-top{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform 0.2s;}
-.renk-top.secili{border-color:white;transform:scale(1.15);}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-family:Arial,sans-serif;font-size:0.83rem;border-bottom:1px solid rgba(212,168,67,0.08);}
-.stat-row:last-child{border-bottom:none;}
-.stat-row .deger{color:var(--gold-soft);font-weight:bold;}
-.small{font-size:0.78rem;color:var(--dim);font-family:Arial,sans-serif;line-height:1.5;}
-.bosluk{height:10px;}
-.sep{height:1px;background:var(--border);margin:10px 0;}
-.status-msg{font-family:Arial,sans-serif;font-size:0.75rem;color:var(--dim);text-align:center;margin-top:8px;}
+body{
+background:#F4F8F4;
+}
+
+header{
+background:#2E7D32;
+color:white;
+padding:25px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+header h1{
+font-size:38px;
+}
+
+header p{
+margin-top:8px;
+opacity:.9;
+}
+
+.container{
+width:90%;
+max-width:900px;
+margin:auto;
+margin-top:35px;
+}
+
+.card{
+
+background:white;
+border-radius:22px;
+padding:30px;
+margin-bottom:25px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.3s;
+cursor:pointer;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.icon{
+
+font-size:65px;
+text-align:center;
+
+}
+
+.title{
+
+font-size:28px;
+font-weight:bold;
+text-align:center;
+margin-top:10px;
+color:#2E7D32;
+
+}
+
+.progress{
+
+margin-top:20px;
+
+}
+
+.bar{
+
+width:100%;
+height:18px;
+background:#ddd;
+border-radius:50px;
+overflow:hidden;
+
+}
+
+.fill{
+
+width:0%;
+height:100%;
+background:#43A047;
+transition:1s;
+
+}
+
+.percent{
+
+text-align:right;
+margin-top:8px;
+font-weight:bold;
+color:#2E7D32;
+
+}
+
+button{
+
+margin-top:25px;
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#2E7D32;
+color:white;
+font-size:18px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#1B5E20;
+
+}
+
+.bottom{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:18px;
+box-shadow:0 -3px 15px rgba(0,0,0,.15);
+
+}
+
+.nav{
+
+text-align:center;
+font-size:15px;
+color:#2E7D32;
+cursor:pointer;
+
+}
+
 </style>
+
 </head>
+
 <body>
-<div id="tanitim">
-  <div class="t-logo">🕌</div>
-  <h1 class="t-baslik">NamazVakti Premium</h1>
-  <p class="t-alt">Namaz vakitleri, kıble, takip, sünnetler,<br>motivasyon ve yapay zeka — tek uygulamada.</p>
-  <div class="t-ozellikler">
-    <div class="t-ozellik"><span class="ikon">⏰</span><p><b>Namaz Vakitleri</b>Konumuna göre gerçek zamanlı vakitler</p></div>
-    <div class="t-ozellik"><span class="ikon">📊</span><p><b>90 Günlük Takip</b>Namaz ve oruç takibini kolayca yönet</p></div>
-    <div class="t-ozellik"><span class="ikon">🤖</span><p><b>Yapay Zeka Asistan</b>Dini ve genel sorularını sor</p></div>
-    <div class="t-ozellik"><span class="ikon">☀️</span><p><b>Peygamber Sünnetleri</b>50+ sünnet listesi ile takip et</p></div>
-  </div>
-  <button class="baslat-btn" onclick="document.getElementById('tanitim').style.display='none'">Başla →</button>
-  <p class="t-alt2">Reklamsız · Ücretsiz · Her zaman güncel</p>
-</div>
+
 <header>
-  <div class="header-top">
-    <div class="header-logo"><span>🕌</span><div><h1>NamazVakti Premium</h1><p>Reklamsız & Ücretsiz</p></div></div>
-    <button class="ai-btn" onclick="sayfaGec('asistan')">🤖 Asistan</button>
-  </div>
-  <nav class="top-nav" id="topNav">
-    <button data-page="namaz" class="active">🕌 Namaz</button>
-    <button data-page="kible">🧭 Kıble</button>
-    <button data-page="takip">📊 Takip</button>
-    <button data-page="oruc">🌙 Oruç</button>
-    <button data-page="sunnet">☀️ Sünnet</button>
-    <button data-page="motive">💡 Motive</button>
-    <button data-page="sss">❓ SSS</button>
-    <button data-page="asistan">🤖 Asistan</button>
-    <button data-page="ayarlar">⚙️ Ayarlar</button>
-  </nav>
+
+<h1>🌿 Rota90</h1>
+
+<p>Her gün bir adım daha.</p>
+
 </header>
-<div class="page active" id="page-namaz">
-  <div class="card">
-    <div class="card-title">⏰ Bugünün Namaz Vakitleri</div>
-    <div id="vakitListesi"><p class="small">Vakitleri görmek için butona bas.</p></div>
-    <div class="bosluk"></div>
-    <button class="btn" onclick="vakitleriGetir()">📍 Konumumu Kullan</button>
-    <p class="status-msg" id="vakitStatus"></p>
-  </div>
-  <div class="card">
-    <div class="card-title">💬 Günün Hadisi</div>
-    <div class="motive-kart" style="margin:0"><p id="hadisMetin">Yükleniyor...</p><p class="kaynak" id="hadisKaynak"></p></div>
-    <div class="bosluk"></div>
-    <button class="btn2" onclick="yeniHadis()">Yenisini Göster</button>
-  </div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="icon">📿</div>
+
+<div class="title">
+
+90 Günlük Namaz Takibi
+
 </div>
-<div class="page" id="page-kible">
-  <div class="card">
-    <div class="card-title">🧭 Kıble Yönü</div>
-    <div class="kible-wrap">
-      <div id="compass"><div id="needle"></div></div>
-      <p class="small" id="kibleBilgi" style="text-align:center">Kıble yönünü bulmak için konumuna izin ver.</p>
-      <button class="btn" onclick="kibleBul()">📍 Kıbleyi Bul</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">📖 Kıble Hakkında</div>
-    <p class="small" style="line-height:1.8">Kıble, Mekke'deki Kâbe'nin yönüdür. Türkiye'nin çoğu bölgesinden bakıldığında güneydoğu yönüne denk gelir.</p>
-  </div>
+
+<div class="progress">
+
+<div class="bar">
+
+<div class="fill" id="namaz"></div>
+
 </div>
-<div class="page" id="page-takip">
-  <div class="card">
-    <div class="card-title">✅ Bugünkü Namazlar</div>
-    <div id="bugunTakip"></div>
-    <div class="bosluk"></div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>Bugünkü ilerleme</span><span id="bugunYuzde">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="bugunBar" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">📅 90 Günlük Takip</div>
-    <p class="small" style="margin-bottom:8px">Her güne dokun, tamamlandı olarak işaretle.</p>
-    <div class="gun-grid" id="gunGrid90"></div>
-    <div class="bosluk"></div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span id="gunSayi">0/90 gün</span><span id="gunYuzde">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="gunBar" style="width:0%"></div></div>
-    </div>
-  </div>
+
+<div class="percent">
+
+0 / 90 Gün
+
 </div>
-<div class="page" id="page-oruc">
-  <div class="card">
-    <div class="card-title">🌙 Ramazan 30 Günlük Takip</div>
-    <p class="small" style="margin-bottom:10px">Tuttuğun günlere dokun.</p>
-    <div class="ramazan-grid" id="ramazanGrid"></div>
-    <div class="bosluk"></div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span id="orucSayi">0/30 gün</span><span id="orucYuzde">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="orucBar" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">💬 Oruç Motivasyonu</div>
-    <div class="motive-kart" style="margin:0"><p id="orucMotive">Yükleniyor...</p><p class="kaynak" id="orucKaynak"></p></div>
-    <div class="bosluk"></div>
-    <button class="btn2" onclick="yeniOrucMotive()">Yenisini Göster</button>
-  </div>
+
 </div>
-<div class="page" id="page-sunnet">
-  <div class="card">
-    <div class="card-title">☀️ Peygamber Sünnetleri</div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span id="sunnetSayi">0 sünnet</span><span id="sunnetYuzde">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="sunnetBar" style="width:0%"></div></div>
-    </div>
-    <div class="sep"></div>
-    <div id="sunnetListesi"></div>
-  </div>
+
+<button>
+
+Devam Et
+
+</button>
+
 </div>
-<div class="page" id="page-motive">
-  <div class="card">
-    <div class="card-title">💡 Günün Motivasyonu</div>
-    <div class="motive-kart" style="margin:0"><p id="motiveMetin">Yükleniyor...</p><p class="kaynak" id="motiveKaynak"></p></div>
-    <div class="bosluk"></div>
-    <button class="btn" onclick="yeniMotive()">Yeni Motivasyon</button>
-  </div>
-  <div class="card">
-    <div class="card-title">🤲 Günlük Dua</div>
-    <div class="motive-kart" style="margin:0"><p id="duaMetin">Yükleniyor...</p><p class="kaynak" id="duaKaynak"></p></div>
-    <div class="bosluk"></div>
-    <button class="btn2" onclick="yeniDua()">Yeni Dua</button>
-  </div>
-  <div class="card">
-    <div class="card-title">📖 Kur'an'a Teşvik</div>
-    <div class="motive-kart" style="margin:0;background:linear-gradient(135deg,rgba(212,168,67,0.12),rgba(10,10,0,0.8))">
-      <p style="font-size:0.88rem;line-height:1.8">"Kur'an'ı en güzel şekilde okuyanınız benim yanımda en değerli olanınızdır."</p>
-      <p class="kaynak">— Hadis-i Şerif</p>
-    </div>
-    <div class="bosluk"></div>
-    <p class="small" style="text-align:center">Her gün en az bir sayfa Kur'an okumayı alışkanlık haline getir. 📖</p>
-  </div>
+
+<div class="card">
+
+<div class="icon">🌙</div>
+
+<div class="title">
+
+30 Günlük Ramazan Takibi
+
 </div>
-<div class="page" id="page-sss">
-  <div class="card">
-    <div class="card-title">❓ Sık Sorulan Sorular</div>
-    <div id="sssListesi"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">🎬 Önerilen Videoslar</div>
-    <div class="video-item"><div class="video-ikon">▶</div><div><a href="https://www.youtube.com" target="_blank">Namaz Nasıl Kılınır?</a><p>Adım adım namaz rehberi</p></div></div>
-    <div class="video-item"><div class="video-ikon">▶</div><div><a href="https://www.youtube.com" target="_blank">Abdest Nasıl Alınır?</a><p>Detaylı abdest anlatımı</p></div></div>
-    <div class="video-item"><div class="video-ikon">▶</div><div><a href="https://www.youtube.com" target="_blank">Namaz Sureleri</a><p>Fatiha ve kısa sureler</p></div></div>
-    <p class="small" style="margin-top:8px;opacity:0.4">Daha fazla video yakında eklenecek.</p>
-  </div>
+
+<div class="progress">
+
+<div class="bar">
+
+<div class="fill" id="ramazan"></div>
+
 </div>
-<div class="page" id="page-asistan">
-  <div class="card">
-    <div class="card-title">🤖 İslami Rehber Asistanı</div>
-    <p class="small" style="margin-bottom:12px">Dini veya genel konularda soru sorabilirsin.</p>
-    <div class="ai-mesajlar" id="aiMesajlar">
-      <div class="mesaj asistan">Merhaba! Ben NamazVakti Premium Asistanıyım. Sana yardımcı olmaktan mutluluk duyarım. 🕌</div>
-    </div>
-    <div class="ai-input-wrap">
-      <input class="ai-input" id="aiInput" placeholder="Soru sor..." onkeydown="if(event.key==='Enter')aiGonder()">
-      <button class="ai-gonder" onclick="aiGonder()">➤</button>
-    </div>
-  </div>
+
+<div class="percent">
+
+0 / 30 Gün
+
 </div>
-<div class="page" id="page-ayarlar">
-  <div class="card">
-    <div class="card-title">🔑 Yapay Zeka Ayarı</div>
-    <p class="small" style="margin-bottom:8px">Gemini API Anahtarınızı girin:</p>
-    <input type="password" class="ai-input" id="apiKeyInput" placeholder="AIzaSy..." onchange="saveApiKey()" style="width:100%; margin-bottom:8px;">
-    <p class="small" style="opacity:0.5; line-height:1.4;">Anahtarınız kimseyle paylaşılmaz, tamamen güvenli bir şekilde tarayıcınızda (localStorage) saklanır.</p>
-  </div>
-  <div class="card">
-    <div class="card-title">🎨 Tema Rengi</div>
-    <p class="small" style="margin-bottom:10px">Ana rengi seç:</p>
-    <div class="renk-grid" id="renkGrid"></div>
-  </div>
-  <div class="card">
-    <div class="card-title">ℹ️ Uygulama Hakkında</div>
-    <div class="stat-row"><span>Ad</span><span class="deger">NamazVakti Premium</span></div>
-    <div class="stat-row"><span>Versiyon</span><span class="deger">3.0 Beta</span></div>
-    <div class="stat-row"><span>Geliştirici</span><span class="deger">burkibabatusturkis45</span></div>
-    <div class="stat-row"><span>Reklam</span><span class="deger" style="color:#4caf50">Yok ✓</span></div>
-    <div class="stat-row"><span>Ücret</span><span class="deger" style="color:#4caf50">Ücretsiz ✓</span></div>
-  </div>
-      </div><script>
-function safeSetItem(key, value) {
-  try { 
-    localStorage.setItem(key, value); 
-  } catch (e) { 
-    console.error("LocalStorage erişim hatası:", e); 
-  }
-}
 
-function safeGetItem(key) {
-  try { 
-    return localStorage.getItem(key); 
-  } catch (e) { 
-    return null; 
-  }
-}
+</div>
 
-const namazlar = ["🌙 Sabah", "🕐 Öğle", "🕓 İkindi", "🌆 Akşam", "🌃 Yatsı"];
-const sunnetler = ["Sağ elle yemek yemek ve içmek", "Yemek öncesi Besmele çekmek", "Yemek sonra Elhamdülillah demek", "Yatmadan önce misvak kullanmak", "Sabah kalktığında üç kez el yıkamak", "Tuvalete girerken sol ayakla girmek", "Tuvaletten çıkarken sağ ayakla çıkmak", "Eve girerken selam vermek", "Eve girerken sağ ayakla girmek", "Evden çıkarken dua okumak", "Uyumadan önce Ayetel Kürsi okumak", "Uyumadan önce İhlas Felak Nas okumak", "Sağ tarafına yatmak", "Sabah namazından sonra zikir çekmek", "Her gün 33 Sübhanallah 33 Elhamdülillah 34 Allahüekber demek", "Cuma günü salavat getirmek", "Cuma günü Kehf Suresi okumak", "Yolda eziyet veren şeyi kaldırmak", "Büyüklere saygı göstermek", "Küçüklere şefkat göstermek", "Komşuya iyi davranmak", "Hasta ziyareti yapmak", "Aksırınca Elhamdülillah demek", "Aksırana Yerhameküllah demek", "Ayakkabıyı sağ ayaktan giymek", "Ayakkabıyı sol ayaktan çıkarmak", "Gülümsemek ve tatlı dilli olmak", "Sağ el ile vermek ve almak", "Sofrada en yakındakinden yemek", "İçerken oturmak", "Üç nefeste içmek", "Her işe Besmele ile başlamak", "Dua ederken elleri kaldırmak", "Dua bitince yüzü ellere sürmek", "Camiye girerken sağ ayakla girmek", "Camiden çıkarken sol ayakla çıkmak", "Sabah namazını camide kılmaya çalışmak", "Selamı herkese önce vermek", "Aile efradına güzel davranmak", "Çocuklara şefkat ve sevgi göstermek", "Kibar ve nazik olmak", "Borcu ödemeyi geciktirmemek", "Hayvanlara iyi davranmak", "Ağaç dikmek ve yeşili korumak", "İsraftan kaçınmak", "Temizliğe özen göstermek", "Özür dileyenden özür kabul etmek", "Kızdığında abdest almak"];
-const hadisler = [{h:"İşlerin en hayırlısı az da olsa devamlı yapılandır.",k:"Buhari & Müslim"},{h:"Güler yüzle selam vermek bile bir sadakadır.",k:"Hadis-i Şerif"},{h:"Temizlik imanın yarısıdır.",k:"Müslim"},{h:"Dili ve eliyle insanlara zarar vermeyen gerçek Müslümandır.",k:"Buhari"},{h:"Büyüklere saygı küçüklere şefkat gösterin.",k:"Hadis-i Şerif"},{h:"Komşusu açken tok yatan bizden değildir.",k:"Hadis-i Şerif"},{h:"Kolaylaştırınız zorlaştırmayınız.",k:"Buhari"},{h:"En hayırlınız ahlakça en güzel olanınızdır.",k:"Buhari & Müslim"}];
-const motiveler = [{m:"Allah sabredenlerin yanındadır.",k:"Bakara Suresi 153"},{m:"Sonsuz cennetin yanında 80 yıllık dünya gerçekten fanidir. Namazı sakın bırakma!",k:"İslami öğreti"},{m:"Kim Allah'a tevekkül ederse Allah ona yeter.",k:"Talak Suresi 3"},{m:"Her zorlukla birlikte bir kolaylık vardır.",k:"Inşirah Suresi 5-6"},{m:"Namaz müminin miracıdır.",k:"Hadis-i Şerif"},{m:"Dünya ahiretin tarlasıdır.",k:"İslami öğreti"}];
-const dualar = [{d:"Rabbimiz! Bize dünyada da iyilik ver ahirette de iyilik ver ve bizi ateş azabından koru.",k:"Bakara Suresi 201"},{d:"Allah'ım! Kalbimi dininde sabit kıl.",k:"Tirmizi"},{d:"Allah'ım! Senden faydalı ilim temiz rızık istiyorum.",k:"İbn Mace"},{d:"Allah'ım! Beni affet bana merhamet et.",k:"Müslim"}];
-const orucMotiveler = [{m:"Oruç sabrın yarısıdır.",k:"Hadis-i Şerif"},{m:"Ramazan gelince cennetin kapıları açılır.",k:"Buhari & Müslim"},{m:"Oruçlu kişi iftarını açarken ettiği dua reddedilmez.",k:"İbn Mace"}];
-const sssList = [{s:"Namaz kaç vakit farz?",c:"Günde 5 vakit namaz farz: Sabah Öğle İkindi Akşam ve Yatsı."},{s:"Abdestsiz namaz kılınır mı?",c:"Hayır abdest şarttır."},{s:"Kaza namazı ne zaman kılınır?",c:"Kılınamayan namaz kaza olur en kısa sürede kılınmalıdır."},{s:"Kıble neresi?",c:"Mekke'deki Kâbe'nin yönüdür. Türkiye'den güneydoğu yönüdür."},{s:"Bu uygulama ücretli mi?",c:"Hayır tamamen ücretsiz ve reklamsızdır."}];
-const temalar = [{renk:"#0a0a0a",isim:"Siyah"},{renk:"#0a1830",isim:"Gece Mavisi"},{renk:"#0a2218",isim:"Koyu Yeşil"},{renk:"#1a0a28",isim:"Mor"},{renk:"#280a0a",isim:"Bordo"},{renk:"#0a2828",isim:"Turkuaz"}];
+<button>
 
-document.getElementById('bugunTakip').innerHTML = namazlar.map((v,i) => `<div class="takip-item"><span>${v}</span><input type="checkbox" id="n${i}" onchange="takipGuncelle(true)"></div>`).join('');
-document.getElementById('gunGrid90').innerHTML = Array.from({length:90},(_,i) => `<div class="gun-kare ${i===89?'bugun':''}" id="g${i}" onclick="gunToggle(${i})"></div>`).join('');
-document.getElementById('ramazanGrid').innerHTML = Array.from({length:30},(_,i) => `<div class="r-gun" id="r${i+1}" onclick="orucToggle(${i+1})">${i+1}</div>`).join('');
-document.getElementById('sunnetListesi').innerHTML = sunnetler.map((s,i) => `<div class="sunnet-item"><input type="checkbox" id="sun${i}" onchange="sunnetGuncelle(true)"><label for="sun${i}" id="sunL${i}">${s}</label></div>`).join('');
-document.getElementById('sssListesi').innerHTML = sssList.map((item,i) => `<div class="sss-item" id="sss${i}"><div class="sss-soru" onclick="document.getElementById('sss${i}').classList.toggle('acik')">${item.s}</div><div class="sss-cevap">${item.c}</div></div>`).join('');
+Devam Et
 
-const baslangicTemasi = safeGetItem('secili_tema') || "#0a0a0a";
-document.getElementById('renkGrid').innerHTML = temalar.map((t) => `<div class="renk-top ${t.renk===baslangicTemasi?'secili':''}" style="background:${t.renk}" onclick="temaUygula('${t.renk}',this)" title="${t.isim}"></div>`).join('');
+</button>
 
-document.addEventListener("DOMContentLoaded", () => {
-  const savedKey = safeGetItem("gemini_api_key");
-  if(savedKey && document.getElementById('apiKeyInput')) {
-    document.getElementById('apiKeyInput').value = savedKey;
-  }
-  hafizadanYukle();
-});
+</div>
 
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  safeSetItem("gemini_api_key", key);
-}
+</div>
 
-document.querySelectorAll('#topNav button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#topNav button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('page-' + btn.dataset.page).classList.add('active');
-  });
-});
+<div class="bottom">
 
-function sayfaGec(s) {
-  document.querySelectorAll('#topNav button').forEach(b => b.classList.toggle('active', b.dataset.page === s));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + s).classList.add('active');
-}
+<div class="nav">
+🏠<br>
+Ana Sayfa
+</div>
 
-async function vakitleriGetir() {
-  const st = document.getElementById('vakitStatus');
-  const li = document.getElementById('vakitListesi');
-  st.textContent = "Konum alınıyor...";
-  
-  if (!navigator.geolocation) {
-    st.textContent = "Konum desteklenmiyor.";
-    return;
-  }
-  
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    st.textContent = "Yükleniyor...";
-    try {
-      const { latitude, longitude } = pos.coords;
-      const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=13`);
-      if (!res.ok) throw new Error("Ağ hatası");
-      const data = await res.json();
-      const t = data.data.timings;
-      const v = [["🌙 İmsak", t.Fajr], ["☀️ Güneş", t.Sunrise], ["🕐 Öğle", t.Dhuhr], ["🕓 İkindi", t.Asr], ["🌆 Akşam", t.Maghrib], ["🌃 Yatsı", t.Isha]];
-      li.innerHTML = v.map(([n, s]) => `<div class="vakit-item"><span>${n}</span><span class="vakit-saat">${s}</span></div>`).join('');
-      st.textContent = "✓ Vakitler güncellendi.";
-    } catch (e) {
-      st.textContent = "Vakitler alınamadı.";
-    }
-  }, () => {
-    st.textContent = "Konum izni reddedildi.";
-  }, { timeout: 10000 });
-}
+<div class="nav">
+📊<br>
+İstatistik
+</div>
 
-let kibleBearing = null;
+<div class="nav">
+🎯<br>
+Hedefler
+</div>
 
-async function kibleBul() {
-  const b = document.getElementById('kibleBilgi');
-  if (!navigator.geolocation) {
-    b.textContent = "Konum desteklenmiyor.";
-    return;
-  }
-  
-  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    try {
-      const permissionState = await DeviceOrientationEvent.requestPermission();
-      if (permissionState === 'granted') {
-        window.addEventListener('deviceorientation', handleOrientation, true);
-      } else {
-        b.textContent = "Sensör izni reddedildi.";
-        return;
-      }
-    } catch (e) {
-      b.textContent = "Sensör başlatılamadı.";
-      return;
-    }
-  } else {
-    if ('ondeviceorientationabsolute' in window) {
-      window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-    } else {
-      window.addEventListener('deviceorientation', handleOrientation, true);
-    }
-  }
+<div class="nav">
+⚙️<br>
+Ayarlar
+</div>
 
-  b.textContent = "Konum alınıyor...";
-  navigator.geolocation.getCurrentPosition((pos) => {
-    const { latitude, longitude } = pos.coords;
-    const kLat = 21.4225 * Math.PI / 180;
-    const kLng = 39.8262 * Math.PI / 180;
-    const lat = latitude * Math.PI / 180;
-    const lng = longitude * Math.PI / 180;
-    const dL = kLng - lng;
-    const y = Math.sin(dL) * Math.cos(kLat);
-    const x = Math.cos(lat) * Math.sin(kLat) - Math.sin(lat) * Math.cos(kLat) * Math.cos(dL);
-    kibleBearing = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
-    b.textContent = `Kıble açısı: ${kibleBearing.toFixed(0)}°. Telefonu düz tutarak dönün.`;
-  }, () => {
-    b.textContent = "Konum alınamadı.";
-  }, { timeout: 10000 });
-}
+</div>
 
-function handleOrientation(event) {
-  let heading = null;
-  if (event.webkitCompassHeading) {
-    heading = event.webkitCompassHeading;
-  } else if (event.alpha !== null) {
-    heading = (360 - event.alpha) % 360;
-  }
-  if (heading !== null && kibleBearing !== null) {
-    let needleRotation = (kibleBearing - heading + 360) % 360;
-    document.getElementById('needle').style.transform = `translate(-50%,-100%) rotate(${needleRotation}deg)`;
-  }
-}
+<script>
 
-function takipGuncelle(save = true) {
-  const checkedCount = namazlar.filter((_, i) => document.getElementById(`n${i}`)?.checked).length;
-  const y = Math.round(checkedCount / 5 * 100);
-  document.getElementById('bugunBar').style.width = y + '%';
-  document.getElementById('bugunYuzde').textContent = y + '%';
-  if (save) {
-    const durum = namazlar.map((_, i) => document.getElementById(`n${i}`)?.checked);
-    safeSetItem('namaz_takip', JSON.stringify(durum));
-  }
-}
+setTimeout(()=>{
 
-function gunToggle(i) {
-  document.getElementById(`g${i}`).classList.toggle('tamam');
-  renderGunStats();
-  const tamamOlanlar = [];
-  for (let j = 0; j < 90; j++) {
-    if (document.getElementById(`g${j}`).classList.contains('tamam')) tamamOlanlar.push(j);
-  }
-  safeSetItem('gun_takip_90', JSON.stringify(tamamOlanlar));
-}
+document.getElementById("namaz").style.width="25%";
 
-function renderGunStats() {
-  const t = document.querySelectorAll('.gun-kare.tamam').length;
-  const y = Math.round(t / 90 * 100);
-  document.getElementById('gunSayi').textContent = `${t}/90 gün`;
-  document.getElementById('gunYuzde').textContent = y + '%';
-  document.getElementById('gunBar').style.width = y + '%';
-}
+document.getElementById("ramazan").style.width="50%";
 
-function orucToggle(n) {
-  document.getElementById(`r${n}`).classList.toggle('tutuldu');
-  renderOrucStats();
-  const tutulanlar = [];
-  for (let j = 1; j <= 30; j++) {
-    if (document.getElementById(`r${j}`).classList.contains('tutuldu')) tutulanlar.push(j);
-  }
-  safeSetItem('ramazan_takip', JSON.stringify(tutulanlar));
-}
+},500);
 
-function renderOrucStats() {
-  const s = document.querySelectorAll('.r-gun.tutuldu').length;
-  const y = Math.round(s / 30 * 100);
-  document.getElementById('orucSayi').textContent = `${s}/30 gün`;
-  document.getElementById('orucYuzde').textContent = y + '%';
-  document.getElementById('orucBar').style.width = y + '%';
-}
-
-function sunnetGuncelle(save = true) {
-  const s = sunnetler.filter((_, i) => document.getElementById(`sun${i}`)?.checked).length;
-  const y = Math.round(s / sunnetler.length * 100);
-  document.getElementById('sunnetSayi').textContent = `${s} sünnet`;
-  document.getElementById('sunnetYuzde').textContent = y + '%';
-  document.getElementById('sunnetBar').style.width = y + '%';
-  sunnetler.forEach((_, i) => {
-    const l = document.getElementById(`sunL${i}`);
-    const c = document.getElementById(`sun${i}`);
-    if (l && c) l.className = c.checked ? 'sunnet-bitti' : '';
-  });
-  if (save) {
-    const durum = sunnetler.map((_, i) => document.getElementById(`sun${i}`)?.checked);
-    safeSetItem('sunnet_takip', JSON.stringify(durum));
-  }
-}
-
-function yeniHadis() {
-  const r = hadisler[Math.floor(Math.random() * hadisler.length)];
-  document.getElementById('hadisMetin').textContent = r.h;
-  document.getElementById('hadisKaynak').textContent = "— " + r.k;
-}
-
-function yeniMotive() {
-  const r = motiveler[Math.floor(Math.random() * motiveler.length)];
-  document.getElementById('motiveMetin').textContent = r.m;
-  document.getElementById('motiveKaynak').textContent = "— " + r.k;
-}
-
-function yeniDua() {
-  const r = dualar[Math.floor(Math.random() * dualar.length)];
-  document.getElementById('duaMetin').textContent = r.d;
-  document.getElementById('duaKaynak').textContent = "— " + r.k;
-}
-
-function yeniOrucMotive() {
-  const r = orucMotiveler[Math.floor(Math.random() * orucMotiveler.length)];
-  document.getElementById('orucMotive').textContent = r.m;
-  document.getElementById('orucKaynak').textContent = "— " + r.k;
-}
-
-yeniHadis(); yeniMotive(); yeniDua(); yeniOrucMotive();
-
-function hafizadanYukle() {
-  const n = JSON.parse(safeGetItem('namaz_takip') || '[]');
-  n.forEach((val, i) => { 
-    const el = document.getElementById(`n${i}`); 
-    if(el) el.checked = val; 
-  });
-  takipGuncelle(false);
-
-  const g = JSON.parse(safeGetItem('gun_takip_90') || '[]');
-  g.forEach(i => document.getElementById(`g${i}`)?.classList.add('tamam'));
-  renderGunStats();
-
-  const r = JSON.parse(safeGetItem('ramazan_takip') || '[]');
-  r.forEach(n => document.getElementById(`r${n}`)?.classList.add('tutuldu'));
-  renderOrucStats();
-
-  const s = JSON.parse(safeGetItem('sunnet_takip') || '[]');
-  s.forEach((val, i) => { 
-    const el = document.getElementById(`sun${i}`); 
-    if(el) el.checked = val; 
-  });
-  sunnetGuncelle(false);
-  
-  const kayitliTema = safeGetItem('secili_tema');
-  if(kayitliTema) {
-    temaUygula(kayitliTema, null);
-  }
-}
-
-function formatAiResponse(text) {
-  let escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  escaped = escaped.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-  escaped = escaped.replace(/\n/g, "<br>");
-  return escaped;
-}
-
-let aiHistory = [];
-let isAiLoading = false;
-
-async function aiGonder() {
-  if (isAiLoading) return;
-  const input = document.getElementById('aiInput');
-  const mesaj = input.value.trim();
-  if (!mesaj) return;
-  input.value = '';
-  
-  isAiLoading = true;
-  const c = document.getElementById('aiMesajlar');
-  
-  const userDiv = document.createElement('div');
-  userDiv.className = "mesaj kullanici";
-  userDiv.textContent = mesaj;
-  c.appendChild(userDiv);
-  
-  const loadingDiv = document.createElement('div');
-  loadingDiv.className = "mesaj yukleniyor";
-  loadingDiv.id = "yukleniyor";
-  loadingDiv.textContent = "✦ Yazıyor...";
-  c.appendChild(loadingDiv);
-  
-  c.scrollTop = c.scrollHeight;
-  
-  const apiKey = safeGetItem("gemini_api_key");
-  if (!apiKey) {
-    if (document.getElementById('yukleniyor')) document.getElementById('yukleniyor').remove();
-    const errDiv = document.createElement('div');
-    errDiv.className = "mesaj asistan";
-    errDiv.innerHTML = "Lütfen önce <b>⚙️ Ayarlar</b> sayfasından geçerli bir Gemini API anahtarı ekleyin.";
-    c.appendChild(errDiv);
-    c.scrollTop = c.scrollHeight;
-    isAiLoading = false;
-    return;
-  }
-
-  aiHistory.push({ role: "user", parts: [{ text: mesaj }] });
-
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: aiHistory,
-        systemInstruction: {
-          parts: [{ text: "Sen NamazVakti Premium uygulamasının yardımcı asistanısın. Türkçe konuş. Dini sorularda Kuran ve hadislere dayalı saygılı cevaplar ver. Genel sorularda da yardımcı ol. Kısa, estetik ve anlaşılır cevaplar ver." }]
-        }
-      })
-    });
-    
-    if (document.getElementById('yukleniyor')) document.getElementById('yukleniyor').remove();
-    const data = await res.json();
-    
-    if (data.candidates && data.candidates[0].content.parts[0].text) {
-      const aiResponse = data.candidates[0].content.parts[0].text;
-      const asistanDiv = document.createElement('div');
-      asistanDiv.className = "mesaj asistan";
-      asistanDiv.innerHTML = formatAiResponse(aiResponse);
-      c.appendChild(asistanDiv);
-      aiHistory.push({ role: "model", parts: [{ text: aiResponse }] });
-    } else if (data.error) {
-      const errDiv = document.createElement('div');
-      errDiv.className = "mesaj asistan";
-      errDiv.textContent = `API Hatası: ${data.error.message}`;
-      c.appendChild(errDiv);
-      aiHistory.pop();
-    } else {
-      throw new Error("Geçersiz yanıt");
-    }
-  } catch (e) {
-    if (document.getElementById('yukleniyor')) document.getElementById('yukleniyor').remove();
-    const errDiv = document.createElement('div');
-    errDiv.className = "mesaj asistan";
-    errDiv.textContent = "Bağlantı kurulamadı veya geçersiz API anahtarı.";
-    c.appendChild(errDiv);
-    aiHistory.pop();
-  }
-  
-  isAiLoading = false;
-  setTimeout(() => { c.scrollTop = c.scrollHeight; }, 50);
-}
-
-function temaUygula(renk, el) {
-  document.querySelectorAll('.renk-top').forEach(r => r.classList.remove('secili'));
-  if (el) el.classList.add('secili');
-  document.body.style.background = `radial-gradient(circle at 50% 0%, ${renk}dd, ${renk} 70%)`;
-  safeSetItem('secili_tema', renk);
-}
 </script>
+
 </body>
+
 </html>
